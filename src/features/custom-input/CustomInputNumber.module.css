@@ -1,0 +1,46 @@
+@value common-border-radius: 4px;
+@value button-size: 48px;
+@value button-color: rgb(30, 159, 210);
+@value common-font-size: 16px;
+
+.custom__number__input {
+  display: flex;
+  font-size: common-font-size;
+}
+
+.text__input::-webkit-outer-spin-button,
+.text__input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.text__input {
+    -moz-appearance: textfield;
+}
+
+.minus__button, .add__button {
+  width: button-size;
+  height: button-size;
+  box-sizing: border-box;
+  border-radius: common-border-radius;
+  border: 1px solid button-color;
+  background-color: white;
+  color: button-color;
+  cursor: pointer
+}
+
+.minus__button:disabled, .add__button:disabled {
+  opacity: 0.48;
+  cursor: not-allowed;
+}
+
+.text__input {
+  width: button-size;
+  height: button-size;
+  box-sizing: border-box;
+  border-radius: common-border-radius;
+  border: 1px solid rgb(191, 191, 191);
+  background-color: white;
+  margin: 0 8px;
+  text-align: center;
+  font-size: common-font-size;
+}

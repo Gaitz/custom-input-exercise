@@ -13,11 +13,12 @@ Nothing but an exercise
 ## Requirement
 
 - [ ] CustomInputNumber component
-  - [ ] style
-  - [ ] support `min`, `max`, `step`, `name`, `value`, `onChange`, `onBlur`, `disabled`
-  - [ ] validation
+  - [x] style
+  - [x] support `min`, `max`, `step`, `name`, `value`, `onChange`, `onBlur`, `disabled`
+  - [x] support long press
+  - [ ] spec validation
 - [ ] RoomAllocation component
-  - [ ] validation
+  - [ ] spec validation
 
 ## Technical Stack
 

@@ -1,29 +1,36 @@
-import { render, screen, fireEvent } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import CustomInputNumber from './CustomInputNumber'
 
 describe('click add button', () => {
   test('click add button when value < max', () => {
     const changeHandler = jest.fn()
-    render(<CustomInputNumber max={2} step={1} onChange={changeHandler} />)
+    render(<CustomInputNumber onChange={changeHandler} />)
     const addButton = screen.getByRole('button', {
       name: '+'
     })
-    const inputElement = screen.getByDisplayValue('0')
-    expect(inputElement.value).toBe('0')
+    expect(screen.getByDisplayValue('')).toBeInTheDocument()
     fireEvent.click(addButton)
     expect(changeHandler).toBeCalled()
-    expect(inputElement.value).toBe('1')
+    expect(screen.getByDisplayValue('0')).toBeInTheDocument()
   })
 
   test('click add button when value == max limit', () => {
-    const changeHandler = (e) => {
-      console.log(e.target.value)
-    }
+    const changeHandler = jest.fn()
     render(<CustomInputNumber max={2} value={2} onChange={changeHandler} />)
     const addButton = screen.getByRole('button', {
       name: '+'
     })
     fireEvent.click(addButton)
     expect(changeHandler).not.toBeCalled()
+  })
+
+  test('long press add button', async () => {
+    const changeHandler = jest.fn()
+    render(<CustomInputNumber max={5} onChange={changeHandler} />)
+    const addButton = screen.getByRole('button', {
+      name: '+'
+    })
+    fireEvent.mouseDown(addButton)
+    await waitFor(() => expect(changeHandler).toBeCalledTimes(6))
   })
 })

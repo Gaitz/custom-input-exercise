@@ -1,5 +1,5 @@
 import styles from './CustomInputNumber.module.css'
-import { useEffect, useReducer, useRef, useMemo } from 'react'
+import { useEffect, useReducer, useRef, useMemo, useState } from 'react'
 import { createSlice, current } from '@reduxjs/toolkit'
 
 const customInputNumberSlice = createSlice({
@@ -9,7 +9,11 @@ const customInputNumberSlice = createSlice({
   },
   reducers: {
     increase (state, action) {
-      const { min, max, step = 1 } = action.payload
+      const { min, max, value, step = 1 } = action.payload
+      if (value !== undefined) {
+        state.value = value
+        return
+      }
       if (current(state).value === '') {
         state.value = min ?? 0
         return
@@ -21,7 +25,11 @@ const customInputNumberSlice = createSlice({
       state.value = currentValue + step
     },
     decrease (state, action) {
-      const { min, step = 1 } = action.payload
+      const { min, value, step = 1 } = action.payload
+      if (value !== undefined) {
+        state.value = value
+        return
+      }
       if (current(state).value === '') {
         state.value = min ?? 0
         return
@@ -31,34 +39,13 @@ const customInputNumberSlice = createSlice({
         return
       }
       state.value = currentValue - step
-    },
-    assignValue (state, action) {
-      const { min, max, rawValue } = action.payload
-      const value = Number.parseInt(rawValue)
-
-      if (Number.isNaN(value) || !Number.isInteger(value)) {
-        if (min) {
-          state.value = min
-        } else {
-          state.value = ''
-        }
-        return
-      }
-
-      if (min && value < min) {
-        state.value = min
-        return
-      }
-      if (max && value > max) {
-        state.value = max
-        return
-      }
-      state.value = value
     }
   }
 })
 
 const { increase, decrease } = customInputNumberSlice.actions
+
+const LONG_PRESS_EVENT_INTERVAL = 100
 
 const CustomInputNumber = ({
   min,
@@ -71,6 +58,7 @@ const CustomInputNumber = ({
   disabled
 }) => {
   const textInput = useRef(null)
+  const [timerId, setTimerId] = useState(null)
 
   const dispatchInputValue = useMemo(
     () => (customValue) => {
@@ -91,23 +79,23 @@ const CustomInputNumber = ({
     })
   )
 
-  const onClickAdd = (e) => {
-    e.preventDefault()
+  const onClickAdd = () => {
     dispatch(
       increase({
         min,
         max,
+        value,
         step
       })
     )
   }
 
-  const onClickMinus = (e) => {
-    e.preventDefault()
+  const onClickMinus = () => {
     dispatch(
       decrease({
         min,
         max,
+        value,
         step
       })
     )
@@ -123,6 +111,15 @@ const CustomInputNumber = ({
         className={styles.minus__button}
         disabled={disabled}
         onClick={onClickMinus}
+        onMouseDown={() => {
+          const id = setInterval(() => {
+            onClickMinus()
+          }, LONG_PRESS_EVENT_INTERVAL)
+          setTimerId(id)
+        }}
+        onMouseUp={() => {
+          clearInterval(timerId)
+        }}
       >
         -
       </button>
@@ -136,7 +133,12 @@ const CustomInputNumber = ({
         max={max}
         step={step}
         onBlur={onBlur}
-        onChange={onChange}
+        onChange={(e) => {
+          if (e.target.value === '' || e.target.value === undefined) {
+            return
+          }
+          onChange(e)
+        }}
         value={value}
         className={styles.text__input}
       />
@@ -144,6 +146,15 @@ const CustomInputNumber = ({
         className={styles.add__button}
         disabled={disabled}
         onClick={onClickAdd}
+        onMouseDown={() => {
+          const id = setInterval(() => {
+            onClickAdd()
+          }, LONG_PRESS_EVENT_INTERVAL)
+          setTimerId(id)
+        }}
+        onMouseUp={() => {
+          clearInterval(timerId)
+        }}
       >
         +
       </button>

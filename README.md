@@ -14,8 +14,9 @@ Nothing but an exercise
 
 - [ ] CustomInputNumber component
   - [x] style
+  - [x] support `min`, `max`, `step`, `name`, `value`, `onChange`, `onBlur`, `disabled`
+  - [x] support long press
   - [ ] spec validation
-  - [ ] support `min`, `max`, `step`, `name`, `value`, `onChange`, `onBlur`, `disabled`
 - [ ] RoomAllocation component
   - [ ] spec validation
 

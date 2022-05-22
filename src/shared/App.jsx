@@ -9,15 +9,15 @@ const App = () => {
           console.log('outer onChange', e.target.value)
           console.log('outer onChange name', e.target.name)
         }}
-        // min={1}
+        min={2}
         max={5}
-        // step={2}
+        step={3}
         name='custom'
         onBlur={(e) => {
           console.log('outer onBlur', e.target.value)
         }}
       />
-      <input
+      {/* <input
         type="number"
         onChange={(e) => {
           console.log('native onChange', e.target.value)
@@ -30,7 +30,7 @@ const App = () => {
         onBlur={(e) => {
           console.log('native onBlur', e.target.value)
         }}
-      />
+      /> */}
     </div>
   )
 }

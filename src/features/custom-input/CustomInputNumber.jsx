@@ -53,7 +53,7 @@ const CustomInputNumber = ({
   step,
   name,
   value,
-  onChange,
+  onChange = () => {},
   onBlur,
   disabled
 }) => {
@@ -109,7 +109,7 @@ const CustomInputNumber = ({
     <div className={styles.custom__number__input}>
       <button
         className={styles.minus__button}
-        disabled={disabled}
+        disabled={disabled ?? state.value === min}
         onClick={onClickMinus}
         onMouseDown={() => {
           const id = setInterval(() => {
@@ -144,7 +144,7 @@ const CustomInputNumber = ({
       />
       <button
         className={styles.add__button}
-        disabled={disabled}
+        disabled={disabled ?? state.value === max}
         onClick={onClickAdd}
         onMouseDown={() => {
           const id = setInterval(() => {

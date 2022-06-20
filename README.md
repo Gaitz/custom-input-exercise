@@ -28,3 +28,9 @@ Nothing but an exercise
 - [x] React
 - [x] Redux + Redux Toolkit
 - [x] Jest
+
+## Review
+
+主要有下列的問題：
+- clearInterval 無法正確執行
+- Input 輸入時執行異常
